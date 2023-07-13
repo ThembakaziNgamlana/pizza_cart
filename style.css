@@ -1,0 +1,71 @@
+body{
+    background-color:grey;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+.pizza{
+    
+    border: 1px solid #dad7cd; 
+    padding: 1em;
+    margin: 1em;
+    margin-bottom :0.5em;
+    border-radius:0.5em;
+   
+}
+
+
+.small_pizza{
+    background-color:#118ab2;
+    flex:1;
+    
+}
+
+.medium_pizza{
+    background-color:#d62828;
+    flex:1;
+}
+
+.large_pizza{
+    background-color:#7209b7;
+    flex:1;
+}
+
+.pizza_contacts{
+    background-color: #4f772d;
+}
+ @media(min-width:960px){
+   .pizzas{
+        display:flex;
+    }
+} 
+
+.shopping_cart{
+    background-color: greenyellow;
+}
+
+h2{
+    text-align: center;
+}
+
+.button{
+    height: 100px;
+    width: 30px;
+}
+
+.but{
+    height: 50px;
+    width:200px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.pizza_but{
+    text-align: center;
+}
+
+.pay_button{
+    height: 50px;
+    width: 150px;
+    text-align: center;
+    margin-top: 40px;
+    margin-left: 240px;
+}
