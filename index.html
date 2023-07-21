@@ -6,149 +6,110 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>perfect_pizza</title>
-    <script src="//unpkg.com/alpinejs" defer></script>
-
     <link rel="stylesheet" href="style.css">
+    
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    <script src="pizza.js" defer></script>
 </head>
 
-<body>
+<body x-data="pizzaApp">
     <h1>Perfect Pizza</h1>
+    <!-- Shopping Cart -->
+    <div class="shopping_cart" x-show="showCart">
+        <h2>Shopping Cart</h2>
 
-    <div x-data="{ showCart: false }">
-        <div class="pizzas">
-            <div class="pizza small_pizza">
-                <h2>Small Pizza</h2>
-                <img src="pictures/pizza.jpg" width="100">
-                <h3>R49.00</h3>
-                <div>
-                    Small Pizzas. R70.00. Our par-baked pizza bases are crispy and delicious. We use A-grade steak
-                    and quality chicken breast fillets for the topping.
-                </div>
-                <div class="pizza_but">
-                    <button class="but" x-on:click="showCart = true">Buy</button>
-                </div>
-            </div>
-
-            <div class="pizza medium_pizza">
-                <h2>Medium Pizza</h2>
-                <img src="pictures/pizza.jpg" width="150">
-                <h3>R89.00</h3>
-                <div>
-                    The medium pizza is usually a 12-in. circle, whereas a standard large pizza is a 14-in. circle. It
-                    seems like you’ll have nearly twice as much pizza for roughly the same price if you order two
-                    mediums.
-                </div>
-                <div class="pizza_but">
-                    <button class="but" x-on:click="showCart = true">Buy</button>
-                </div>
-            </div>
-
-            <div class="pizza large_pizza">
-                <h2>Large Pizza</h2>
-                <img src="pictures/pizza.jpg" width="200">
-                <h3>R129.00</h3>
-                <div>
-                    A large pizza is cut into eight slices and will serve two or three people. You’re going to have way
-                    more pizza with two 12-inch pizzas.
-                </div>
-                <div class="pizza_but">
-                    <button class="but" x-on:click="showCart = true">Buy</button>
-                </div>
-            </div>
+        <div>
+            <h3>Small</h3>
+            <div x-text="small"></div>
+            <button x-on:click="incrementSmall">+</button>
+            <button x-on:click="decrementSmall">-</button>
+            R0.00
         </div>
 
-        <div class="shopping_cart" x-show="showCart" x-data="{
-            small: 0, 
-            medium: 0, 
-            large: 0,
-            totalCost: 0,
-            incrementSmall() {
-                this.small++;
-                this.totalCost += 32.99;
-            },
-            decrementSmall() {
-                if (this.small > 0) {
-                    this.small--;
-                    this.totalCost -= 32.99;
-                }
-            },
-            incrementMedium() {
-                this.medium++;
-                this.totalCost += 65.99;
-            },
-            decrementMedium() {
-                if (this.medium > 0) {
-                    this.medium--;
-                    this.totalCost -= 65.99;
-                }
-            },
-            incrementLarge() {
-                this.large++;
-                this.totalCost += 150.99;
-            },
-            decrementLarge() {
-                if (this.large > 0) {
-                    this.large--;
-                    this.totalCost -= 150.99;
-                }
-            },
-            pay() {
-                if (this.totalCost === 0) {
-                    alert('Please add items to your cart.');
-                } else {
-                    alert('Enjoy your pizzas!');
-                }
-            }
-        }">
-            <h2>Shopping Cart</h2>
+        <div>
+            <h3>Medium</h3>
+            <div x-text="medium"></div>
+            <button x-on:click="incrementMedium">+</button>
+            <button x-on:click="decrementMedium">-</button>
+            R0.00
+        </div>
 
-            <div>
-                <h3>Small</h3>
-                <div x-text="small"></div>
-                <button x-on:click="incrementSmall">+</button>
-                <button x-on:click="decrementSmall">-</button>
-                R32.99
-            </div>
+        <div>
+            <h3>Large</h3>
+            <div x-text="large"></div>
+            <button x-on:click="incrementLarge">+</button>
+            <button x-on:click="decrementLarge">-</button>
+            R0.00
+        </div>
 
-            <div>
-                <h3>Medium</h3>
-                <div x-text="medium"></div>
-                <button x-on:click="incrementMedium">+</button>
-                <button x-on:click="decrementMedium">-</button>
-                R65.99
-            </div>
+        <div x-show="showCart">
+            <label for="payment_amount">Enter Payment Amount:</label>
+            <input type="number" id="payment_amount" x-model="paymentAmount">
+        </div>
 
-            <div>
-                <h3>Large</h3>
-                <div x-text="large"></div>
-                <button x-on:click="incrementLarge">+</button>
-                <button x-on:click="decrementLarge">-</button>
-                R150.99
-            </div>
+    
+        <div x-show="showCart && (small + medium + large) > 0">
+            <button class="check_but" x-on:click="checkout">Checkout</button>
+        </div>
 
-            <div>
-                <h3>Total Cost</h3>
-                <div x-text="'R' + totalCost.toFixed(2)"></div>
-            </div>
+    
+        <div x-show="statusMessage" x-text="statusMessage" x-transition:enter="transition ease-out duration-300"
+            x-transition:leave="transition ease-in duration-200" x-on:click="statusMessage = ''"
+            class="status_message"></div>
+    </div>
 
-            <div>
-                <label for="paymentAmount"><h3>Payment amount</h3></label>
-                <input type="text" id="paymentAmount" class="textString" placeholder="R0.00">
-            </div>
-
-            <div class="button">
-                <button class="pay_button" x-on:click="pay">Pay</button>
-            </div>
+    <!-- Small Pizza -->
+    <div class="pizza small_pizza" x-init="initializePizza">
+        <h2>Small Pizza</h2>
+        <img src="pictures/pizza.jpg" width="100">
+        <h3>R49.99</h3>
+        <div>
+            Small Pizzas. R70.00. Our par-baked pizza bases are crispy and delicious. We use A-grade steak
+            and quality chicken breast fillets for the topping.
+        </div>
+        <div class="pizza_but">
+            <button class="but" x-on:click="showCart = true">Buy</button>
         </div>
     </div>
 
-    <div class="pizza_contacts">
-        <h2>Contact details</h2>
-        Contact us at: 041 462 6978 info@perfectpizza.co.za
+    <!-- Medium Pizza -->
+    <div class="pizza medium_pizza" x-init="initializePizza">
+        <h2>Medium Pizza</h2>
+        <img src="pictures/pizza.jpg" width="150">
+        <h3>R89.99</h3>
+        <div>
+            The medium pizza is usually a 12-in. circle, whereas a standard large pizza is a 14-in. circle. It
+            seems like you’ll have nearly twice as much pizza for roughly the same price if you order two
+            mediums.
+        </div>
+        <div class="pizza_but">
+            <button class="but" x-on:click="showCart = true">Buy</button>
+        </div>
     </div>
 
-    <script src="./index.js"></script>
-    <script src="./pizza.js"></script>
+    <!-- Large Pizza -->
+    <div class="pizza large_pizza" x-init="initializePizza">
+        <h2>Large Pizza</h2>
+        <img src="pictures/pizza.jpg" width="200">
+        <h3>R129.99</h3>
+        <div>
+            A large pizza is cut into eight slices and will serve two or three people. You’re going to have way
+            more pizza with two 12-inch pizzas.
+        </div>
+        <div class="pizza_but">
+            <button class="but" x-on:click="showCart = true">Buy</button>
+        </div>
+
+        <div class="pizza_contacts">
+            <h2>Contact details</h2>
+            Contact us at: 041 462 6978 info@perfectpizza.co.za
+        </div>
+    </div>
+
+   
+    <script src="index.js" defer></script>
+   
 </body>
 
 </html>
+
