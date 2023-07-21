@@ -7,15 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>perfect_pizza</title>
     <link rel="stylesheet" href="style.css">
-    
-    <script src="https://unpkg.com/alpinejs" defer></script>
     <script src="pizza.js" defer></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    
+</head>
 </head>
 
 <body x-data="pizzaApp">
     <h1>Perfect Pizza</h1>
-    <!-- Shopping Cart -->
-    <div class="shopping_cart" x-show="showCart">
+    <div class="shopping_cart" x-show="showCart=true">
         <h2>Shopping Cart</h2>
 
         <div>
@@ -23,7 +23,7 @@
             <div x-text="small"></div>
             <button x-on:click="incrementSmall">+</button>
             <button x-on:click="decrementSmall">-</button>
-            R0.00
+          
         </div>
 
         <div>
@@ -31,7 +31,7 @@
             <div x-text="medium"></div>
             <button x-on:click="incrementMedium">+</button>
             <button x-on:click="decrementMedium">-</button>
-            R0.00
+           
         </div>
 
         <div>
@@ -39,14 +39,24 @@
             <div x-text="large"></div>
             <button x-on:click="incrementLarge">+</button>
             <button x-on:click="decrementLarge">-</button>
-            R0.00
+            
         </div>
 
         <div x-show="showCart">
-            <label for="payment_amount">Enter Payment Amount:</label>
-            <input type="number" id="payment_amount" x-model="paymentAmount">
+            <div class="amount">
+                <label for="payment_amount">Enter Payment Amount:</label>
+                <input type="number" id="payment_amount" x-model="paymentAmount">
+            </div>
+            
+            <div >
+                <button x-on:click="checkout" class="pay_but">Pay</button>
+            </div>
+          
         </div>
 
+        <div x-show="charge > 0">
+            <!-- <p>Charge: ${{ charge.toFixed(2) }}</p> -->
+        </div>
     
         <div x-show="showCart && (small + medium + large) > 0">
             <button class="check_but" x-on:click="checkout">Checkout</button>

@@ -11,8 +11,16 @@ body{
     border-radius:0.5em;
    
 }
-
-
+.pay_but{
+    height: 50px;
+    width:200px;
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+.amount{
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
 .check_but{
     height: 50px;
     width:200px;

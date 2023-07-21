@@ -1,14 +1,14 @@
 document.addEventListener('alpine:init', () => {
-        Alpine.data('pizzaApp', ({
-            return {
-                
-            
+        Alpine.data('pizzaApp', function(){
+        return{
             small: 0,
             medium: 0,
-            large: 0,
+            large: 0,  
+            charge: 0,
+            
             paymentAmount: 0,
             statusMessage: '',
-
+      
             incrementSmall() {
                 this.small++;
             },
@@ -37,13 +37,14 @@ document.addEventListener('alpine:init', () => {
                 const totalAmount = this.small * 70 + this.medium * 90 + this.large * 130;
                 if (this.paymentAmount >= totalAmount) {
                     this.statusMessage = 'Enjoy your pizzas!';
+                    this.charge += totalAmount; 
                     this.clearCart();
                 } else {
                     this.statusMessage = 'Sorry - that is not enough money!';
                 }
                 setTimeout(() => {
                     this.statusMessage = '';
-                }, 3000); // Message disappears after 3 seconds
+                }, 3000); 
             },
             clearCart() {
                 this.small = 0;
@@ -53,9 +54,19 @@ document.addEventListener('alpine:init', () => {
             },
             initializePizza() {
                 this.showCart = false;
+            },
+            smallTotal() {
+                return this.small * 49.99;
+            },
+            mediumTotal() {
+                return this.medium * 90.00;
+            },
+            largeTotal() {
+                return this.large * 130.00;
             }
-        }
-        }));
+              }
+            
+        } );
     });
 
- 
+    
